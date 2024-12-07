@@ -1,3 +1,8 @@
+require "date"
+require "dotenv/load"
+require_relative "./lib/aoc_api"
+require_relative "./lib/aoc_tasks"
+
 desc "Run tests, optionally specifying a day"
 task :test, %i[day] do |_, args|
   args.with_defaults(day: :all) => { day: }
@@ -29,6 +34,12 @@ task :answers, %i[day] do |_t, args|
   else
     require_relative "day_#{day}.rb"
   end
+end
+
+desc "Set up the day's puzzle"
+task :setup, %i[day] do |_t, args|
+  args.with_defaults(day: Date.today.day) => { day: }
+  AocTasks.new.invoke(:setup, [], day: day)
 end
 
 desc "Default: Run tests"
